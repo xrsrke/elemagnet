@@ -8,8 +8,9 @@ from typing import Any
 from dataclasses import dataclass, field
 
 import vector
+from scipy.constants import epsilon_0, pi
 
-# %% ../nbs/21_electric_charge_and_electric_field.ipynb 8
+# %% ../nbs/21_electric_charge_and_electric_field.ipynb 7
 class Vector:
     def __init__(self, x, y, z = None):
         self.x = x
@@ -24,6 +25,28 @@ class Vector:
             return vector.obj(x=self.x, y=self.y).rho
         else:
             raise ValueError("Hell no")
+    
+    def add(self, other: vector):
+        #return vector(x=self.x, y=self.y)
+        pass
+
+# %% ../nbs/21_electric_charge_and_electric_field.ipynb 18
+class Particle:
+    def __init__(
+        self,
+        electric_charge: int, # electric charge
+        coordinate: vector, # coorindate
+    ):
+        self.electric_charge = electric_charge
+        self.coordinate = coordinate
+    
+    @property
+    def electric_charge(self):
+        return self._electric_charge
+    
+    @electric_charge.setter
+    def electric_charge(self, value):
+        self._electric_charge = value
 
 # %% ../nbs/21_electric_charge_and_electric_field.ipynb 20
 @dataclass
@@ -60,13 +83,13 @@ class Force:
 # %% ../nbs/21_electric_charge_and_electric_field.ipynb 31
 class CoulombLaw:
     
-    def electric_force(self, q1, q2):
+    def electric_force(self, q1: Particle, q2: Particle):
         pass
 
-# %% ../nbs/21_electric_charge_and_electric_field.ipynb 34
+# %% ../nbs/21_electric_charge_and_electric_field.ipynb 35
 class ElectricField(Particle):
     
-    def magnitude(self, measure_coodrinate): # the coordinate of where the field is measured
+    def magnitude(self, measure_coodrinate: Vector): # the coordinate of where the field is measured
         
         """"
         Calculate the magnitude of a point charge to where the field is measured
@@ -78,4 +101,4 @@ class ElectricField(Particle):
         
         print(f"electric_field = {self.electric_charge}")
         
-        return ELECTRIC_CONSTANT * (self.electric_charge / distance_squared) * unit_vector
+        return (1/(4*pi*epsilon_0)) * (self.electric_charge / distance_squared) * unit_vector
